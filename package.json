@@ -1,0 +1,25 @@
+{
+    "name": "koa-cache",
+    "version": "1.0.0",
+    "description": "A Redis backed cache with a Koa Middleware  ",
+    "main": "dist/index.js",
+    "type": "module",
+    "scripts": {
+        "build": "tsc",
+        "watch": "tsc --watch",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {
+        "@types/koa": "^2.14.0",
+        "ioredis": "^5.3.2"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.19",
+        "typescript": "^5.3.3"
+    },
+    "engines": {
+        "node": ">=18"
+    }
+}
