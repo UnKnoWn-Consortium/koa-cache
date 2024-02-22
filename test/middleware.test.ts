@@ -47,7 +47,7 @@ describe(
                     ctx.response.body = "test-cache-1234";
                 }
             );
-            strictEqual(await store.get(keyBuilder(<Request>ctx.request)), "test-cache-1234");
+            strictEqual(await store.get(keyBuilder(<Request>ctx.request)), '"test-cache-1234"');
         });
 
         it("middleware does not invoke the next handler if cached body exists", async (t) => {

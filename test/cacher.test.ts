@@ -6,12 +6,15 @@ import { Store, } from "../src/index.js";
 
 let store: Store;
 
-const testKey1 = "test1";
-const testKey2 = "test2";
-const testKey3 = "test3";
+const testKey1 = "hello1";
+const testKey2 = "hello2";
+const testKey3 = "hello3";
+const testKey4 = "world";
+
 const testValue1 = "1234";
 const testValue2 = "5678";
 const testValue3 = "8765";
+const testValue4 = "4321";
 
 describe(
     "Cacher tests",
@@ -29,8 +32,18 @@ describe(
         });
 
         it("a key should be deleted", async () => {
-            await store.delete(testKey1);
+            strictEqual(await store.delete(testKey1), true);
             strictEqual(await store.get(testKey1), null);
+        });
+
+        it("keys should be deleted by pattern", async () => {
+            await store.set(testKey1, testValue1);
+            await store.set(testKey2, testValue2);
+            await store.set(testKey3, testValue3);
+            await store.set(testKey4, testValue4);
+            strictEqual(await store.delete("hello", true), true);
+            strictEqual(await store.get(testKey4), testValue4);
+            await store.delete(testKey4);
         });
 
         it("all keys set should be listed", async () => {

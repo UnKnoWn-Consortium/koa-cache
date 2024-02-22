@@ -48,7 +48,7 @@ export function cacherFactory(store: Cacher, opts: MiddlewareOptions = defaults,
 
         if (await store.has(key)) {
             ctx.response.status = 200;
-            ctx.response.body = await store.get(key);
+            ctx.response.body = JSON.parse(await store.get(key) ?? "");
             return;
         }
 
@@ -60,8 +60,6 @@ export function cacherFactory(store: Cacher, opts: MiddlewareOptions = defaults,
         if (opts.ignoreEmptyBody && !ctx.response.body) {
             return;
         }
-        if (typeof ctx.response.body === "string") {
-            await store.set(key, ctx.response.body);
-        }
+        await store.set(key, JSON.stringify(ctx.response.body));
     }
 }

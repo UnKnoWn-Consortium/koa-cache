@@ -1,6 +1,6 @@
 {
     "name": "koa-cacher",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "description": "A Redis backed cache with a Koa Middleware  ",
     "main": "dist/index.js",
     "type": "module",
@@ -12,17 +12,17 @@
     "author": "Tom S <thomas@oblondata.io>",
     "license": "MIT",
     "files": [
-        "dist/*"
+        "dist"
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/UnKnoWn-Consortium/koa-cache.git"
+        "url": "git+https://github.com/UnKnoWn-Consortium/koa-cache.git"
     },
     "dependencies": {
-        "@types/koa": "^2.14.0",
         "ioredis": "^5.3.2"
     },
     "devDependencies": {
+        "@types/koa": "^2.14.0",
         "@types/node": "^20.11.19",
         "glob": "^10.3.10",
         "koa": "^2.15.0",
