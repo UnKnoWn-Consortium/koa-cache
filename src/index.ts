@@ -4,5 +4,5 @@
  * Created by Thomas Sham on 12/12/2023.
  */
 
-export { Cacher } from "./components/cacher/index.js";
-export { cacherFactory } from "./components/middleware/index.js";
+export { Cacher as Store } from "./components/cacher/index.js";
+export { cacherFactory as cacher, keyBuilder } from "./components/middleware/index.js";

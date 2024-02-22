@@ -1,5 +1,5 @@
 {
-    "name": "koa-cache",
+    "name": "koa-cacher",
     "version": "1.0.0",
     "description": "A Redis backed cache with a Koa Middleware  ",
     "main": "dist/index.js",
@@ -7,16 +7,26 @@
     "scripts": {
         "build": "tsc",
         "watch": "tsc --watch",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "glob test/*.test.ts --cmd=\"node --import tsx --test\""
     },
-    "author": "",
+    "author": "Tom S <thomas@oblondata.io>",
     "license": "MIT",
+    "files": [
+        "dist/*"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/UnKnoWn-Consortium/koa-cache.git"
+    },
     "dependencies": {
         "@types/koa": "^2.14.0",
         "ioredis": "^5.3.2"
     },
     "devDependencies": {
         "@types/node": "^20.11.19",
+        "glob": "^10.3.10",
+        "koa": "^2.15.0",
+        "tsx": "^4.7.1",
         "typescript": "^5.3.3"
     },
     "engines": {

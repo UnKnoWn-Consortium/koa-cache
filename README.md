@@ -1,2 +1,2 @@
-# Cache Store and Middleware for Koa
+# Redis Cache Store and Middleware for Koa
 

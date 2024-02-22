@@ -4,13 +4,14 @@
  * Created by Thomas Sham on 11/12/2023.
  */
 
-import { Middleware } from "koa";
+import { Middleware, Request } from "koa";
 
 import { Cacher, } from "../cacher/index.js";
 
 interface MiddlewareOptions {
-    cache2XXOnly: boolean;
-    ignoreEmptyBody: boolean;
+    cache2XXOnly?: boolean;
+    ignoreEmptyBody?: boolean;
+    customKeyPart?: string;
 }
 
 const defaults: MiddlewareOptions = {
@@ -18,26 +19,47 @@ const defaults: MiddlewareOptions = {
     ignoreEmptyBody: true,
 };
 
-export function cacherFactory (store: Cacher, opts: MiddlewareOptions = defaults): Middleware {
+export function keyBuilder(request: Request, ...args: string[]): string {
+    let key = `${ request.path }${ request.search }`;
+    for (const arg of args) {
+        if (arg) {
+            key += `:${ arg }`;
+        }
+    }
+    return key;
+}
+
+export function cacherFactory(store: Cacher, opts: MiddlewareOptions = defaults, ): Middleware {
+    opts = { ...defaults, ...opts };
     return async function cacher (
         ctx,
         next
     ) {
-        const key = `${ ctx.request.path }${ ctx.request.search }`;
+        let key: string;
+        if (opts.customKeyPart) {
+            let part: any = ctx;
+            for (let i = 0; i < opts.customKeyPart.split(".").length; i++) {
+                part = part[opts.customKeyPart.split(".")[i]];
+            }
+            key = keyBuilder(ctx.request, part);
+        } else {
+            key = keyBuilder(ctx.request);
+        }
+
         if (await store.has(key)) {
+            ctx.response.status = 200;
             ctx.response.body = await store.get(key);
             return;
         }
+
         await next();
 
         if (opts.cache2XXOnly && (ctx.response.status < 200 || ctx.response.status > 300)) {
             return;
         }
-
         if (opts.ignoreEmptyBody && !ctx.response.body) {
             return;
         }
-
         if (typeof ctx.response.body === "string") {
             await store.set(key, ctx.response.body);
         }
