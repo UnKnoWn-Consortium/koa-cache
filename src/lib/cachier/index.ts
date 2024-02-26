@@ -7,7 +7,7 @@ export interface CacherOptions extends RedisOptions {
 const defaults: CacherOptions = {
     port: 6379,
     host: "127.0.0.1",
-    keyPrefix: "koa-cacher:",
+    keyPrefix: "koa-cachier:",
     expire: 24 * 60 * 60,
 };
 

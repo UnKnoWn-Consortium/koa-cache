@@ -6,7 +6,7 @@
 
 import { Middleware, Request } from "koa";
 
-import { Cacher, } from "../cacher/index.js";
+import { Cacher, } from "../cachier/index.js";
 
 interface MiddlewareOptions {
     cache2XXOnly?: boolean;
@@ -29,7 +29,7 @@ export function keyBuilder(request: Request, ...args: string[]): string {
     return key;
 }
 
-export function cacherFactory(store: Cacher, opts: MiddlewareOptions = defaults, ): Middleware {
+export function cachierFactory(store: Cacher, opts: MiddlewareOptions = defaults, ): Middleware {
     opts = { ...defaults, ...opts };
     return async function cacher (
         ctx,

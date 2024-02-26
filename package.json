@@ -1,7 +1,7 @@
 {
-    "name": "koa-cacher",
-    "version": "1.0.3",
-    "description": "A Redis backed cache with a Koa Middleware  ",
+    "name": "koa-cachier",
+    "version": "1.0.4",
+    "description": "A Koa Middleware backed by a Redis-powered cache store",
     "main": "dist/index.js",
     "type": "module",
     "scripts": {
@@ -22,8 +22,8 @@
         "ioredis": "^5.3.2"
     },
     "devDependencies": {
-        "@types/koa": "^2.14.0",
-        "@types/node": "^20.11.19",
+        "@types/koa": "^2.15.0",
+        "@types/node": "^20.11.20",
         "glob": "^10.3.10",
         "koa": "^2.15.0",
         "tsx": "^4.7.1",

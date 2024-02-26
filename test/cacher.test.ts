@@ -60,9 +60,7 @@ describe(
         });
 
         after(async () => {
-            await store.delete(testKey1);
-            await store.delete(testKey2);
-            await store.delete(testKey3);
+            await store.delete("", true);
             store.destroy();
         });
     }

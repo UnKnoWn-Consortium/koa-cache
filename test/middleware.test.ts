@@ -3,7 +3,7 @@ import { strictEqual, } from "node:assert";
 
 import { ParameterizedContext, Request, } from "koa";
 
-import { Store, cacher, keyBuilder } from "../src/index.js";
+import { Store, cachier, keyBuilder } from "../src/index.js";
 
 let store: Store;
 
@@ -38,7 +38,7 @@ describe(
         });
 
         it("middleware caches response body", async () => {
-            const middleware = cacher(store);
+            const middleware = cachier(store);
             strictEqual(await store.get(keyBuilder(<Request>ctx.request)), null);
             await middleware(
                 <ParameterizedContext>ctx,
@@ -55,7 +55,7 @@ describe(
                 ctx.response.status = 200;
                 ctx.response.body = "test-cache-5678";
             });
-            const middleware = cacher(store);
+            const middleware = cachier(store);
             await middleware(<ParameterizedContext>ctx, next);
             strictEqual(next.mock.calls.length, 1);
             await middleware(<ParameterizedContext>ctx, next);
@@ -63,7 +63,7 @@ describe(
         });
 
         it("middleware does not cache empty response body", async () => {
-            const middleware = cacher(store, { ignoreEmptyBody: true, });
+            const middleware = cachier(store, { ignoreEmptyBody: true, });
             strictEqual(await store.get(keyBuilder(<Request>ctx.request)), null);
             await middleware(
                 <ParameterizedContext>ctx,
@@ -76,7 +76,7 @@ describe(
         });
 
         it("middleware does not cache non-successful (~2XX) response body", async () => {
-            const middleware = cacher(store, { cache2XXOnly: true, });
+            const middleware = cachier(store, { cache2XXOnly: true, });
             strictEqual(await store.get(keyBuilder(<Request>ctx.request)), null);
             await middleware(
                 <ParameterizedContext>ctx,
