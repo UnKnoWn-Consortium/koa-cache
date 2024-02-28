@@ -17,7 +17,7 @@ const testValue3 = "8765";
 const testValue4 = "4321";
 
 describe(
-    "Cacher tests",
+    "Cachier tests",
     async () => {
         before(() => store = new Store({ expire: 2 }));
 

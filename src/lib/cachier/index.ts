@@ -1,29 +1,29 @@
 import { Redis, RedisOptions } from "ioredis";
 
-export interface CacherOptions extends RedisOptions {
+export interface CachierOptions extends RedisOptions {
     expire?: number;
 }
 
-const defaults: CacherOptions = {
+const defaults: CachierOptions = {
     port: 6379,
     host: "127.0.0.1",
     keyPrefix: "koa-cachier:",
     expire: 24 * 60 * 60,
 };
 
-export class Cacher {
-    static #instance: Cacher | undefined;
+export class Cachier {
+    static #instance: Cachier | undefined;
 
-    options: CacherOptions;
+    options: CachierOptions;
     // @ts-ignore
     #connection: Redis;
 
-    constructor(opts: CacherOptions = defaults) {
+    constructor(opts: CachierOptions = defaults) {
         this.options = { ...defaults, ...opts };
-        if (Cacher.#instance) {
-            return Cacher.#instance;
+        if (Cachier.#instance) {
+            return Cachier.#instance;
         }
-        Cacher.#instance = this;
+        Cachier.#instance = this;
         this.#connection = new Redis(this.options);
     }
 
@@ -63,6 +63,6 @@ export class Cacher {
 
     destroy() {
         this.#connection.disconnect();
-        Cacher.#instance = undefined;
+        Cachier.#instance = undefined;
     }
 }

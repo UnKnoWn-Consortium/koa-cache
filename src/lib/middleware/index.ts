@@ -6,12 +6,12 @@
 
 import { Middleware, Request } from "koa";
 
-import { Cacher, } from "../cachier/index.js";
+import { Cachier, } from "../cachier/index.js";
 
 interface MiddlewareOptions {
     cache2XXOnly?: boolean;
     ignoreEmptyBody?: boolean;
-    customKeyPart?: string;
+    keyCustomizer?: Function;
 }
 
 const defaults: MiddlewareOptions = {
@@ -29,19 +29,22 @@ export function keyBuilder(request: Request, ...args: string[]): string {
     return key;
 }
 
-export function cachierFactory(store: Cacher, opts: MiddlewareOptions = defaults, ): Middleware {
+export function cachierFactory(
+    store: Cachier,
+    opts: MiddlewareOptions = defaults,
+    postCacheMiddleware?: Function
+): Middleware {
     opts = { ...defaults, ...opts };
-    return async function cacher (
+    return async function cacher(
         ctx,
         next
     ) {
-        let key: string;
-        if (opts.customKeyPart) {
-            let part: any = ctx;
-            for (let i = 0; i < opts.customKeyPart.split(".").length; i++) {
-                part = part[opts.customKeyPart.split(".")[i]];
+        let key: any;
+        if (opts.keyCustomizer && typeof opts.keyCustomizer === "function") {
+            key = opts.keyCustomizer(ctx);
+            if (!key || typeof key !== "string") {
+                throw new Error("key from `keyCustomizer` function is falsy or not a string");
             }
-            key = keyBuilder(ctx.request, part);
         } else {
             key = keyBuilder(ctx.request);
         }
@@ -49,6 +52,9 @@ export function cachierFactory(store: Cacher, opts: MiddlewareOptions = defaults
         if (await store.has(key)) {
             ctx.response.status = 200;
             ctx.response.body = JSON.parse(await store.get(key) ?? "");
+            if (postCacheMiddleware && typeof postCacheMiddleware === "function") {
+                await postCacheMiddleware(ctx, next);
+            }
             return;
         }
 
